@@ -5,49 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Voting Booth</title>
   <style>
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --bg: #f5f7fa;
+      --text: #333;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: system-ui, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
       text-align: center;
-      background: #f5f7fa;
-      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
+
     h1 {
-      color: #333;
+      margin-bottom: 20px;
     }
+
+    /* Responsive candidate container */
+    #candidates {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      max-width: 800px;
+    }
+
     .candidate {
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 15px auto;
-      padding: 20px;
-      width: 280px;
-      transition: transform 0.1s ease-in-out;
+      border-radius: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      padding: 16px;
+      flex: 1 1 140px;
+      max-width: 160px;
+      min-width: 120px;
+      transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
+
     .candidate:hover {
-      transform: scale(1.02);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
+
     button {
       margin-top: 10px;
-      padding: 10px 18px;
+      padding: 8px 16px;
       border: none;
-      background-color: #007bff;
+      background-color: var(--primary);
       color: white;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 15px;
     }
+
     button:hover {
-      background-color: #0056b3;
+      background-color: var(--primary-dark);
     }
+
     .results {
-      margin-top: 40px;
-      background: #fff;
+      margin-top: 30px;
+      background: white;
       padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      margin-left: auto;
-      margin-right: auto;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .results h2 {
+      margin-top: 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+
+    li {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* Landscape phone optimization */
+    @media (orientation: landscape) and (max-height: 500px) {
+      body {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+      }
+      .candidate {
+        flex: 1 1 100px;
+        max-width: 130px;
+        padding: 10px;
+      }
+      button {
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+      .results {
+        margin-top: 20px;
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -63,9 +132,8 @@
 
   <script>
     const candidates = ["Serena", "Isa", "Kira", "Ellie", "Jessa"];
-
-    // Initialize votes
     let votes = JSON.parse(localStorage.getItem("votes")) || {};
+
     candidates.forEach(name => {
       if (!(name in votes)) votes[name] = 0;
     });
